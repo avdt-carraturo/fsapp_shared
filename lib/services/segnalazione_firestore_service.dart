@@ -48,5 +48,7 @@ class SegnalazioneService {
     await db.collection("segnalazioni").doc(id).update(data);
   }
 
-
+  Stream<QuerySnapshot<Map<String, dynamic>>> getSegnalazioniStream() {
+    return _firestore.collection('segnalazioni').snapshots();
+  }
 }
