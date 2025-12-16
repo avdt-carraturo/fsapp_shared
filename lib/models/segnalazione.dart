@@ -15,6 +15,7 @@ class Segnalazione {
 
   /// URL del file multimediale (foto/video) salvato su Firebase Storage
   final String? mediaUrl;
+  final String? mediaFileName;
 
   Segnalazione({
     required this.idNotifica,
@@ -27,6 +28,7 @@ class Segnalazione {
     this.note,
     required this.apertaDa,
     this.mediaUrl,
+    this.mediaFileName
   });
 
   Map<String, dynamic> toJson() => {
@@ -40,6 +42,7 @@ class Segnalazione {
         "note": note,
         "apertaDa": apertaDa.toJson(),
         "mediaUrl": mediaUrl ?? "",
+        "mediaFileName": mediaFileName ?? ""
       };
 
   factory Segnalazione.fromJson(String id, Map<String, dynamic> json) =>
@@ -54,5 +57,6 @@ class Segnalazione {
         note: json['note'],
         apertaDa: Utente.fromJson(json['apertaDa']?['email'], json['apertaDa']),
         mediaUrl: json['mediaUrl'],
+        mediaFileName: json['mediaFileName']
       );
 }
