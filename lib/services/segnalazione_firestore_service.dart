@@ -49,6 +49,6 @@ class SegnalazioneService {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getSegnalazioniStream() {
-    return _firestore.collection('segnalazioni').snapshots();
+    return db.collection('segnalazioni').snapshots();
   }
 }
