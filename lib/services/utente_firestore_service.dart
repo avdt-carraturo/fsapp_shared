@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/utente.dart';
 import '../models/biglietto.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UtenteService {
   final db = FirebaseFirestore.instance;
@@ -32,4 +33,17 @@ class UtenteService {
       'biglietti': FieldValue.arrayUnion([biglietto.toJson()]),
     });
   }
+  
+  Utente mapFirebaseUserToUtente(User firebaseUser) {
+    return Utente(
+      id: firebaseUser.uid,               // UID Firebase come id
+      nominativo: firebaseUser.displayName ?? '',
+      email: firebaseUser.email ?? '',
+      password: '',                        // password vuota: non serve
+      tipo: 'P',                           // default passeggero, puoi adattare
+      area: null,                          // solo per operatore
+      biglietti: [],                        // lista vuota iniziale
+    );
+  }
+
 }
