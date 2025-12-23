@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/segnalazione.dart';
 import 'package:intl/intl.dart';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
+
 
 class SegnalazioneService {
   final db = FirebaseFirestore.instance;
@@ -51,4 +56,28 @@ class SegnalazioneService {
   Stream<QuerySnapshot<Map<String, dynamic>>> getSegnalazioniStream() {
     return db.collection('segnalazioni').snapshots();
   }
+
+
+  uture<Uint8List> blurMedia(File file) async {
+  final uri = Uri.parse("http://127.0.0.1:8000/blur"); //SERVICE MOCKATO PER IL BLUR DEI FILE
+
+  final request = http.MultipartRequest('POST', uri);
+
+  request.files.add(
+    await http.MultipartFile.fromPath(
+      'file',                  
+      file.path,
+      filename: basename(file.path),
+    ),
+  );
+
+  final response = await request.send();
+
+  if (response.statusCode != 200) {
+    throw Exception("Errore blur: ${response.statusCode}");
+  }
+
+  return await response.stream.toBytes();
+}
+
 }
