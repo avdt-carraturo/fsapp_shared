@@ -58,26 +58,38 @@ class SegnalazioneService {
   }
 
 
-  Future<Uint8List> blurMedia(File file) async {
-  final uri = Uri.parse("http://127.0.0.1:8000/blur"); //SERVICE MOCKATO PER IL BLUR DEI FILE
+  Future<Uint8List> blurMedia(
+  Uint8List bytes, {
+  required String originalFilename,
+}) async {
+  final extension = originalFilename.split('.').last;
+
+  final timestamp =
+      DateFormat("yyyyMMdd_HHmmss").format(DateTime.now());
+
+  final filename = 'allegato_$timestamp.$extension';
+
+  final uri = Uri.parse('http://127.0.0.1:8000/blur');
 
   final request = http.MultipartRequest('POST', uri);
 
   request.files.add(
-    await http.MultipartFile.fromPath(
-      'file',                  
-      file.path,
-      filename: basename(file.path),
+    http.MultipartFile.fromBytes(
+      'file',
+      bytes,
+      filename: filename,
     ),
   );
 
   final response = await request.send();
 
   if (response.statusCode != 200) {
-    throw Exception("Errore blur: ${response.statusCode}");
+    throw Exception('Errore blur service');
   }
 
   return await response.stream.toBytes();
 }
+
+
 
 }
