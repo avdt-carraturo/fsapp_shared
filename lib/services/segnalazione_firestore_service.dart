@@ -58,7 +58,7 @@ class SegnalazioneService {
   }
 
 
-  uture<Uint8List> blurMedia(File file) async {
+  Future<Uint8List> blurMedia(File file) async {
   final uri = Uri.parse("http://127.0.0.1:8000/blur"); //SERVICE MOCKATO PER IL BLUR DEI FILE
 
   final request = http.MultipartRequest('POST', uri);
