@@ -32,4 +32,5 @@ dev_dependencies:
 flutter:
   assets:
       - assets/google_logo.png
+      - assets/app_logo.png
   uses-material-design: true
