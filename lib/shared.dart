@@ -11,3 +11,4 @@ export 'services/biglietto_firestore_service.dart';
 export 'services/modk_auth_user.dart';
 export 'services/auth_service.dart';
 export 'services/ticket_validator.dart';
+export 'services/auth_service_google.dart';
