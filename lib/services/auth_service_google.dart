@@ -1,14 +1,18 @@
+import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter/material.dart';
 
 class AuthServiceGoogle {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    clientId: kIsWeb
+        ? '1029128518658-unthlkpd9prb77ao2sic1kck2qu96ai5.apps.googleusercontent.com'
+        : null,
+  );
 
   Future<User?> signInWithGoogle() async {
     final googleUser = await _googleSignIn.signIn();
-
     if (googleUser == null) return null;
 
     final googleAuth = await googleUser.authentication;
@@ -18,9 +22,7 @@ class AuthServiceGoogle {
       idToken: googleAuth.idToken,
     );
 
-    final userCredential =
-        await _auth.signInWithCredential(credential);
-
+    final userCredential = await _auth.signInWithCredential(credential);
     return userCredential.user;
   }
 
@@ -29,6 +31,5 @@ class AuthServiceGoogle {
     await _auth.signOut();
   }
 
-  Stream<User?> get authStateChanges =>
-      _auth.authStateChanges();
+  Stream<User?> get authStateChanges => _auth.authStateChanges();
 }
